@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AccessCart - Accessible Grocery Assistant</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f8f6;
+            color: #17251b;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+
+        header {
+            background: linear-gradient(135deg, #087f5b, #0ca678);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 38px;
+        }
+
+        header p {
+            font-size: 18px;
+        }
+
+        /* NAVIGATION */
+
+        nav {
+            background: #064e3b;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav button {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 10px 18px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* MAIN */
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        /* VOICE AREA */
+
+        .voice-area {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .voice-button {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: none;
+            background: #ff6b35;
+            color: white;
+            font-size: 45px;
+            cursor: pointer;
+            margin: 20px;
+        }
+
+        .voice-button:hover {
+            background: #e85b2c;
+            transform: scale(1.05);
+        }
+
+        #voiceStatus {
+            color: #087f5b;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* SEARCH */
+
+        .search {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .search input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+
+        .search button {
+            padding: 15px 25px;
+            background: #087f5b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* CATALOG */
+
+        h2 {
+            color: #087f5b;
+            margin-bottom: 15px;
+        }
+
+        .catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 15px;
+        }
+
+        .product {
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .product h3 {
+            color: #087f5b;
+        }
+
+        .product button {
+            width: 100%;
+            padding: 10px;
+            background: #087f5b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        /* CART */
+
+        .cart {
+            background: white;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .cart-item {
+            background: #f1f3f5;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+        }
+
+        /* OPTIMIZER */
+
+        .optimizer {
+            background: #e6fff5;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 20px;
+        }
+
+        .store-result {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 5px solid #087f5b;
+        }
+
+        .cheapest {
+            background: #d8f3dc;
+        }
+
+        .price {
+            color: #087f5b;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .total {
+            background: #087f5b;
+            color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .order {
+            width: 100%;
+            background: #ff6b35;
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* ACCESSIBILITY */
+
+        .accessibility {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .accessibility button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #343a40;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #17251b;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:600px) {
+
+            header h1 {
+                font-size: 28px;
+            }
+
+            .search {
+                flex-direction: column;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <h1>🛒 AccessCart</h1>
+
+        <p>
+            Accessible AI Grocery Shopping Assistant
+        </p>
+
+    </header>
+
+
+    <nav>
+
+        <button onclick="goHome()">🏠 Home</button>
+
+        <button onclick="startVoice()">🎤 Voice Assistant</button>
+
+        <button onclick="showCart()">🛒 My Cart</button>
+
+        <button onclick="readPage()">🔊 Read Page</button>
+
+    </nav>
+
+
+    <div class="container">
+
+
+        <!-- VOICE ASSISTANT -->
+
+        <section class="voice-area">
+
+            <h2>🎤 Voice Grocery Assistant</h2>
+
+            <p>
+                Say:
+            </p>
+
+            <strong>
+                "Add rice, milk, bread and eggs"
+            </strong>
+
+            <br>
+
+            <p>
+                You can also say:
+            </p>
+
+            <strong>
+                "Find cheapest rice"
+            </strong>
+
+            <br>
+
+            <button class="voice-button" onclick="startVoice()">
+                🎤
+            </button>
+
+            <p id="voiceStatus">
+                Press the microphone and speak
+            </p>
+
+        </section>
+
+
+        <!-- SEARCH -->
+
+        <h2>🔎 Find Groceries</h2>
+
+        <div class="search">
+
+            <input id="searchBox" placeholder="Search groceries..." onkeyup="searchProducts()">
+
+            <button onclick="searchProducts()">
+                Search
+            </button>
+
+        </div>
+
+
+        <!-- CATALOG -->
+
+        <h2>🛍️ Grocery Catalog</h2>
+
+        <div id="catalog" class="catalog"></div>
+
+
+        <!-- CART -->
+
+        <section class="cart">
+
+            <h2>🛒 My Grocery Cart</h2>
+
+            <div id="cartItems">
+
+                <p>
+                    Your cart is empty.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- OPTIMIZER -->
+
+        <section class="optimizer">
+
+            <h2>🤖 Smart Price & Availability Optimizer</h2>
+
+            <p>
+                AccessCart automatically searches the available stores and selects
+                the lowest available price for each product.
+            </p>
+
+            <div id="optimization">
+
+                <p>
+                    Add products to your cart to see the optimized shopping plan.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- TOTAL -->
+
+        <div class="total">
+
+            <h2>
+                💰 Estimated Total
+            </h2>
+
+            <h1 id="totalPrice">
+                ₹0
+            </h1>
+
+            <button class="order" onclick="createOrder()">
+                🛒 Create Optimized Order
+            </button>
+
+        </div>
+
+
+        <!-- ACCESSIBILITY -->
+
+        <div class="accessibility">
+
+            <button onclick="increaseText()">
+                🔎 Increase Text
+            </button>
+
+            <button onclick="decreaseText()">
+                🔍 Decrease Text
+            </button>
+
+            <button onclick="readPage()">
+                🔊 Read Page
+            </button>
+
+            <button onclick="stopSpeech()">
+                ⏹ Stop Voice
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <footer>
+
+        <p>
+            AccessCart © 2026
+        </p>
+
+        <p>
+            Technology for accessible and independent grocery shopping.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+
+        /* =========================================
+           GROCERY DATABASE
+        ========================================= */
+
+        const groceries = [
+
+            {
+                name: "Rice",
+                category: "Staples",
+                emoji: "🍚",
+                stores: [
+                    { name: "Store A", price: 55, available: true },
+                    { name: "Store B", price: 52, available: true },
+                    { name: "Store C", price: 60, available: false }
+                ]
+            },
+
+            {
+                name: "Wheat",
+                category: "Staples",
+                emoji: "🌾",
+                stores: [
+                    { name: "Store A", price: 48, available: true },
+                    { name: "Store B", price: 45, available: true },
+                    { name: "Store C", price: 50, available: true }
+                ]
+            },
+
+            {
+                name: "Milk",
+                category: "Dairy",
+                emoji: "🥛",
+                stores: [
+                    { name: "Store A", price: 58, available: true },
+                    { name: "Store B", price: 62, available: true },
+                    { name: "Store C", price: 55, available: true }
+                ]
+            },
+
+            {
+                name: "Bread",
+                category: "Bakery",
+                emoji: "🍞",
+                stores: [
+                    { name: "Store A", price: 40, available: false },
+                    { name: "Store B", price: 35, available: true },
+                    { name: "Store C", price: 38, available: true }
+                ]
+            },
+
+            {
+                name: "Eggs",
+                category: "Dairy",
+                emoji: "🥚",
+                stores: [
+                    { name: "Store A", price: 72, available: true },
+                    { name: "Store B", price: 68, available: true },
+                    { name: "Store C", price: 75, available: true }
+                ]
+            },
+
+            {
+                name: "Apples",
+                category: "Fruits",
+                emoji: "🍎",
+                stores: [
+                    { name: "Store A", price: 120, available: true },
+                    { name: "Store B", price: 110, available: false },
+                    { name: "Store C", price: 115, available: true }
+                ]
+            },
+
+            {
+                name: "Banana",
+                category: "Fruits",
+                emoji: "🍌",
+                stores: [
+                    { name: "Store A", price: 50, available: true },
+                    { name: "Store B", price: 45, available: true },
+                    { name: "Store C", price: 55, available: true }
+                ]
+            },
+
+            {
+                name: "Orange",
+                category: "Fruits",
+                emoji: "🍊",
+                stores: [
+                    { name: "Store A", price: 90, available: true },
+                    { name: "Store B", price: 85, available: true },
+                    { name: "Store C", price: 95, available: false }
+                ]
+            },
+
+            {
+                name: "Tomato",
+                category: "Vegetables",
+                emoji: "🍅",
+                stores: [
+                    { name: "Store A", price: 40, available: true },
+                    { name: "Store B", price: 35, available: true },
+                    { name: "Store C", price: 45, available: true }
+                ]
+            },
+
+            {
+                name: "Potato",
+                category: "Vegetables",
+                emoji: "🥔",
+                stores: [
+                    { name: "Store A", price: 35, available: true },
+                    { name: "Store B", price: 32, available: true },
+                    { name: "Store C", price: 40, available: true }
+                ]
+            },
+
+            {
+                name: "Onion",
+                category: "Vegetables",
+                emoji: "🧅",
+                stores: [
+                    { name: "Store A", price: 42, available: true },
+                    { name: "Store B", price: 38, available: true },
+                    { name: "Store C", price: 45, available: true }
+                ]
+            },
+
+            {
+                name: "Carrot",
+                category: "Vegetables",
+                emoji: "🥕",
+                stores: [
+                    { name: "Store A", price: 55, available: true },
+                    { name: "Store B", price: 48, available: true },
+                    { name: "Store C", price: 52, available: false }
+                ]
+            },
+
+            {
+                name: "Sugar",
+                category: "Staples",
+                emoji: "🍬",
+                stores: [
+                    { name: "Store A", price: 48, available: true },
+                    { name: "Store B", price: 45, available: true },
+                    { name: "Store C", price: 50, available: true }
+                ]
+            },
+
+            {
+                name: "Cooking Oil",
+                category: "Staples",
+                emoji: "🫗",
+                stores: [
+                    { name: "Store A", price: 130, available: true },
+                    { name: "Store B", price: 125, available: true },
+                    { name: "Store C", price: 135, available: false }
+                ]
+            },
+
+            {
+                name: "Salt",
+                category: "Staples",
+                emoji: "🧂",
+                stores: [
+                    { name: "Store A", price: 25, available: true },
+                    { name: "Store B", price: 22, available: true },
+                    { name: "Store C", price: 28, available: true }
+                ]
+            },
+
+            {
+                name: "Tea",
+                category: "Beverages",
+                emoji: "🍵",
+                stores: [
+                    { name: "Store A", price: 110, available: true },
+                    { name: "Store B", price: 105, available: true },
+                    { name: "Store C", price: 120, available: true }
+                ]
+            },
+
+            {
+                name: "Coffee",
+                category: "Beverages",
+                emoji: "☕",
+                stores: [
+                    { name: "Store A", price: 180, available: true },
+                    { name: "Store B", price: 165, available: true },
+                    { name: "Store C", price: 175, available: false }
+                ]
+            },
+
+            {
+                name: "Chicken",
+                category: "Meat",
+                emoji: "🍗",
+                stores: [
+                    { name: "Store A", price: 220, available: true },
+                    { name: "Store B", price: 210, available: false },
+                    { name: "Store C", price: 230, available: true }
+                ]
+            },
+
+            {
+                name: "Biscuits",
+                category: "Snacks",
+                emoji: "🍪",
+                stores: [
+                    { name: "Store A", price: 35, available: true },
+                    { name: "Store B", price: 30, available: true },
+                    { name: "Store C", price: 32, available: true }
+                ]
+            },
+
+            {
+                name: "Soap",
+                category: "Personal Care",
+                emoji: "🧼",
+                stores: [
+                    { name: "Store A", price: 40, available: true },
+                    { name: "Store B", price: 38, available: true },
+                    { name: "Store C", price: 45, available: true }
+                ]
+            }
+
+        ];
+
+
+        /* =========================================
+           CART
+        ========================================= */
+
+        let cart = [];
+
+
+        /* =========================================
+           DISPLAY CATALOG
+        ========================================= */
+
+        function displayCatalog(list = groceries) {
+
+            const catalog =
+                document.getElementById("catalog");
+
+            catalog.innerHTML = "";
+
+            list.forEach(product => {
+
+                const div =
+                    document.createElement("div");
+
+                div.className = "product";
+
+                div.innerHTML = `
+
+            <h2>${product.emoji}</h2>
+
+            <h3>${product.name}</h3>
+
+            <p>${product.category}</p>
+
+            <button onclick="addToCart('${product.name}')">
+                ➕ Add to Cart
+            </button>
+
+        `;
+
+                catalog.appendChild(div);
+
+            });
+
+        }
+
+
+        /* =========================================
+           ADD TO CART
+        ========================================= */
+
+        function addToCart(name) {
+
+            if (!cart.includes(name)) {
+
+                cart.push(name);
+
+            }
+
+            updateCart();
+
+            optimizeCart();
+
+            speak(name + " added to your cart.");
+
+        }
+
+
+        /* =========================================
+           DISPLAY CART
+        ========================================= */
+
+        function updateCart() {
+
+            const container =
+                document.getElementById("cartItems");
+
+            container.innerHTML = "";
+
+            if (cart.length === 0) {
+
+                container.innerHTML =
+                    "<p>Your cart is empty.</p>";
+
+                return;
+
+            }
+
+            cart.forEach(name => {
+
+                const item =
+                    document.createElement("div");
+
+                item.className = "cart-item";
+
+                item.innerHTML = `
+            🛒 <strong>${name}</strong>
+            <button
+                onclick="removeFromCart('${name}')"
+                style="float:right">
+                ❌
+            </button>
+        `;
+
+                container.appendChild(item);
+
+            });
+
+        }
+
+
+        /* =========================================
+           REMOVE ITEM
+        ========================================= */
+
+        function removeFromCart(name) {
+
+            cart =
+                cart.filter(item => item !== name);
+
+            updateCart();
+
+            optimizeCart();
+
+        }
+
+
+        /* =========================================
+           FIND CHEAPEST STORE
+        ========================================= */
+
+        function findBestStore(product) {
+
+            const available =
+                product.stores.filter(
+                    store => store.available
+                );
+
+            if (available.length === 0) {
+
+                return null;
+
+            }
+
+            available.sort(
+                (a, b) => a.price - b.price
+            );
+
+            return available[0];
+
+        }
+
+
+        /* =========================================
+           OPTIMIZE CART
+        ========================================= */
+
+        function optimizeCart() {
+
+            const container =
+                document.getElementById("optimization");
+
+            container.innerHTML = "";
+
+            let total = 0;
+
+            if (cart.length === 0) {
+
+                container.innerHTML =
+                    "<p>Add products to your cart.</p>";
+
+                document.getElementById("totalPrice")
+                    .innerText = "₹0";
+
+                return;
+
+            }
+
+
+            cart.forEach(name => {
+
+                const product =
+                    groceries.find(
+                        item => item.name.toLowerCase() === name.toLowerCase()
+                    );
+
+                const best =
+                    findBestStore(product);
+
+                const div =
+                    document.createElement("div");
+
+                div.className =
+                    "store-result cheapest";
+
+
+                if (best) {
+
+                    total += best.price;
+
+                    div.innerHTML = `
+
+                <h3>
+                    ${product.emoji}
+                    ${product.name}
+                </h3>
+
+                <p>
+                    🏪 Best available store:
+                    <strong>${best.name}</strong>
+                </p>
+
+                <p class="price">
+                    ₹${best.price}
+                </p>
+
+                <p>
+                    🟢 Available
+                </p>
+
+            `;
+
+                } else {
+
+                    div.innerHTML = `
+
+                <h3>${product.name}</h3>
+
+                <p>
+                    🔴 Currently unavailable
+                </p>
+
+            `;
+
+                }
+
+                container.appendChild(div);
+
+            });
+
+
+            document.getElementById("totalPrice")
+                .innerText = "₹" + total;
+
+        }
+
+
+        /* =========================================
+           SEARCH
+        ========================================= */
+
+        function searchProducts() {
+
+            const text =
+                document.getElementById("searchBox")
+                    .value
+                    .toLowerCase();
+
+            const filtered =
+                groceries.filter(product =>
+                    product.name.toLowerCase().includes(text) ||
+                    product.category.toLowerCase().includes(text)
+                );
+
+            displayCatalog(filtered);
+
+        }
+
+
+        /* =========================================
+           VOICE ASSISTANT
+        ========================================= */
+
+        function startVoice() {
+
+            const Recognition =
+                window.SpeechRecognition ||
+                window.webkitSpeechRecognition;
+
+
+            if (!Recognition) {
+
+                alert(
+                    "Voice recognition is not supported. Please use Google Chrome."
+                );
+
+                return;
+
+            }
+
+
+            const recognition =
+                new Recognition();
+
+            recognition.lang = "en-IN";
+
+            recognition.start();
+
+
+            document.getElementById("voiceStatus")
+                .innerText =
+                "🎤 Listening...";
+
+
+            recognition.onresult =
+                function (event) {
+
+                    const command =
+                        event.results[0][0]
+                            .transcript
+                            .toLowerCase();
+
+
+                    document.getElementById("voiceStatus")
+                        .innerText =
+                        "You said: " + command;
+
+
+                    processVoiceCommand(command);
+
+                };
+
+
+            recognition.onerror =
+                function () {
+
+                    document.getElementById("voiceStatus")
+                        .innerText =
+                        "❌ I couldn't understand. Please try again.";
+
+                };
+
+        }
+
+
+        /* =========================================
+           UNDERSTAND VOICE COMMAND
+        ========================================= */
+
+        function processVoiceCommand(command) {
+
+
+            /*
+               Detect grocery names
+            */
+
+            groceries.forEach(product => {
+
+                const name =
+                    product.name.toLowerCase();
+
+                if (command.includes(name)) {
+
+                    if (!cart.includes(product.name)) {
+
+                        cart.push(product.name);
+
+                    }
+
+                }
+
+            });
+
+
+            updateCart();
+
+            optimizeCart();
+
+
+            /*
+               Read confirmation
+            */
+
+            if (cart.length > 0) {
+
+                speak(
+                    "I have updated your grocery cart."
+                );
+
+            }
+
+        }
+
+
+        /* =========================================
+           TEXT TO SPEECH
+        ========================================= */
+
+        function speak(text) {
+
+            if (!("speechSynthesis" in window)) {
+
+                return;
+
+            }
+
+            stopSpeech();
+
+            const speech =
+                new SpeechSynthesisUtterance(text);
+
+            speech.lang = "en-IN";
+
+            speech.rate = 0.9;
+
+            window.speechSynthesis.speak(speech);
+
+        }
+
+
+        /* =========================================
+           READ PAGE
+        ========================================= */
+
+        function readPage() {
+
+            const text = `
+
+        Welcome to AccessCart.
+
+        This is an accessible grocery shopping assistant.
+
+        There are ${groceries.length} grocery products
+        available in the catalog.
+
+        You can use the microphone to add groceries.
+
+        You can also search for products.
+
+        AccessCart compares prices and availability
+        and selects the cheapest available option.
+
+    `;
+
+            speak(text);
+
+        }
+
+
+        /* =========================================
+           STOP SPEECH
+        ========================================= */
+
+        function stopSpeech() {
+
+            window.speechSynthesis.cancel();
+
+        }
+
+
+        /* =========================================
+           TEXT SIZE
+        ========================================= */
+
+        function increaseText() {
+
+            document.body.style.fontSize = "20px";
+
+        }
+
+
+        function decreaseText() {
+
+            document.body.style.fontSize = "16px";
+
+        }
+
+
+        /* =========================================
+           HOME
+        ========================================= */
+
+        function goHome() {
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /* =========================================
+           CART
+        ========================================= */
+
+        function showCart() {
+
+            document.querySelector(".cart")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+
+        /* =========================================
+           CREATE ORDER
+        ========================================= */
+
+        function createOrder() {
+
+            if (cart.length === 0) {
+
+                alert(
+                    "Please add groceries before creating an order."
+                );
+
+                return;
+
+            }
+
+
+            const total =
+                document.getElementById("totalPrice")
+                    .innerText;
+
+
+            speak(
+                "Your optimized grocery order has been created."
+            );
+
+
+            alert(
+
+                "✅ ORDER CREATED!\n\n" +
+
+                "Items: " +
+                cart.join(", ") +
+
+                "\n\nEstimated total: " +
+                total +
+
+                "\n\nThe system selected the cheapest available options."
+
+            );
+
+        }
+
+
+        /* =========================================
+           INITIALIZE WEBSITE
+        ========================================= */
+
+        displayCatalog();
+
+    </script>
+
+</body>
+
+</html>

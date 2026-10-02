@@ -1,0 +1,2285 @@
+< !DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AccessCart | Smart Accessible Grocery Shopping</title><style>
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    background: #071b14;
+    color: #f5fff9;
+    overflow-x: hidden;
+}
+
+/* =========================================================
+   ANIMATED BACKGROUND
+========================================================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background: #00d084;
+    filter: blur(160px);
+    opacity: 0.15;
+    top: -200px;
+    left: -150px;
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background: #7c3aed;
+    filter: blur(170px);
+    opacity: 0.12;
+    right: -200px;
+    bottom: -200px;
+    z-index: -1;
+}
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 16px 6%;
+
+    background: rgba(5, 27, 20, 0.78);
+    backdrop-filter: blur(20px);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(135deg, #00d084, #00a86b);
+
+    border-radius: 13px;
+
+    box-shadow: 0 0 25px rgba(0, 208, 132, .3);
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: #cce9dc;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nav-links a:hover {
+    color: #00e895;
+}
+
+.nav-cart {
+    background: #00c878;
+    color: #062017;
+    padding: 11px 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    min-height: 680px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 80px 7%;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 680px;
+}
+
+.badge {
+    display: inline-block;
+
+    padding: 8px 15px;
+
+    border-radius: 50px;
+
+    background: rgba(0, 208, 132, .12);
+    border: 1px solid rgba(0, 208, 132, .3);
+
+    color: #4fffb0;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(45px, 7vw, 82px);
+    line-height: 1;
+
+    letter-spacing: -4px;
+
+    margin-bottom: 25px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg,
+            #00e895,
+            #66ffc0,
+            #a78bfa);
+
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    color: #b6d4c7;
+    font-size: 20px;
+    line-height: 1.7;
+
+    max-width: 620px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    margin-top: 35px;
+}
+
+.primary-btn {
+    padding: 16px 25px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: linear-gradient(135deg,
+            #00d084,
+            #00a86b);
+
+    color: #03150e;
+
+    font-size: 17px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow: 0 10px 35px rgba(0, 208, 132, .25);
+
+    transition: .3s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 45px rgba(0, 208, 132, .4);
+}
+
+.secondary-btn {
+    padding: 16px 25px;
+
+    border: 1px solid rgba(255, 255, 255, .15);
+
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, .05);
+
+    color: white;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+}
+
+/* =========================================================
+   FLOATING GROCERY GRAPHICS
+========================================================= */
+
+.hero-visual {
+    position: absolute;
+    right: 5%;
+    width: 390px;
+    height: 390px;
+}
+
+.glow-circle {
+    width: 310px;
+    height: 310px;
+
+    position: absolute;
+    left: 40px;
+    top: 40px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle,
+            rgba(0, 208, 132, .25),
+            transparent 65%);
+
+    border: 1px solid rgba(0, 208, 132, .15);
+}
+
+.food {
+    position: absolute;
+
+    width: 78px;
+    height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 40px;
+
+    background: rgba(255, 255, 255, .07);
+
+    border: 1px solid rgba(255, 255, 255, .12);
+
+    backdrop-filter: blur(15px);
+
+    border-radius: 20px;
+
+    animation: float 4s ease-in-out infinite;
+}
+
+.food1 {
+    top: 20px;
+    left: 150px;
+}
+
+.food2 {
+    top: 140px;
+    right: 0;
+    animation-delay: 1s;
+}
+
+.food3 {
+    bottom: 30px;
+    left: 120px;
+    animation-delay: 2s;
+}
+
+.food4 {
+    top: 150px;
+    left: 0;
+    animation-delay: .5s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+
+    padding: 0 7% 60px;
+}
+
+.stat {
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, .04);
+
+    border: 1px solid rgba(255, 255, 255, .08);
+
+    text-align: center;
+}
+
+.stat h2 {
+    color: #4fffb0;
+    font-size: 30px;
+}
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.container {
+    max-width: 1250px;
+    margin: auto;
+
+    padding: 50px 25px;
+}
+
+.section-title {
+    margin-bottom: 25px;
+}
+
+.section-title h2 {
+    font-size: 38px;
+}
+
+.section-title p {
+    color: #9fc0b1;
+}
+
+/* =========================================================
+   VOICE ASSISTANT
+========================================================= */
+
+.voice-card {
+
+    padding: 35px;
+
+    border-radius: 28px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(0, 208, 132, .12),
+            rgba(124, 58, 237, .08));
+
+    border: 1px solid rgba(255, 255, 255, .1);
+
+    text-align: center;
+
+    margin-bottom: 60px;
+}
+
+.voice-card h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.voice-card p {
+    color: #a9c9bb;
+}
+
+.mic {
+
+    width: 115px;
+    height: 115px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background:
+        radial-gradient(circle at 35% 30%,
+            #6fffc0,
+            #00a86b);
+
+    color: #062017;
+
+    font-size: 48px;
+
+    margin: 25px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 0 12px rgba(0, 208, 132, .08),
+        0 0 50px rgba(0, 208, 132, .3);
+
+    transition: .3s;
+}
+
+.mic:hover {
+    transform: scale(1.08);
+}
+
+.listening {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+
+    0% {
+        box-shadow:
+            0 0 0 0 rgba(0, 208, 132, .5);
+    }
+
+    70% {
+        box-shadow:
+            0 0 0 25px rgba(0, 208, 132, 0);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(0, 208, 132, 0);
+    }
+
+}
+
+.voice-status {
+    color: #4fffb0;
+    font-weight: 700;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-wrapper {
+
+    display: flex;
+    gap: 10px;
+
+    margin-bottom: 25px;
+}
+
+.search-wrapper input {
+
+    flex: 1;
+
+    padding: 17px 20px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(255, 255, 255, .12);
+
+    background: rgba(255, 255, 255, .05);
+
+    color: white;
+
+    outline: none;
+
+    font-size: 17px;
+}
+
+.search-wrapper button {
+
+    padding: 0 25px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #00c878;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+.categories {
+
+    display: flex;
+
+    gap: 10px;
+
+    overflow-x: auto;
+
+    padding-bottom: 20px;
+
+    margin-bottom: 20px;
+}
+
+.category {
+
+    flex-shrink: 0;
+
+    padding: 10px 18px;
+
+    border-radius: 50px;
+
+    border: 1px solid rgba(255, 255, 255, .1);
+
+    background: rgba(255, 255, 255, .04);
+
+    color: #cce9dc;
+
+    cursor: pointer;
+}
+
+.category.active,
+.category:hover {
+
+    background: #00c878;
+
+    color: #062017;
+}
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+.products {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(210px, 1fr));
+
+    gap: 18px;
+}
+
+.product {
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, .07),
+            rgba(255, 255, 255, .025));
+
+    border: 1px solid rgba(255, 255, 255, .08);
+
+    border-radius: 22px;
+
+    padding: 20px;
+
+    transition: .3s;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.product:hover {
+
+    transform: translateY(-6px);
+
+    border-color: rgba(0, 208, 132, .35);
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, .25);
+}
+
+.product-image {
+
+    height: 130px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 70px;
+
+    background: rgba(255, 255, 255, .04);
+
+    border-radius: 18px;
+
+    margin-bottom: 15px;
+}
+
+.product h3 {
+
+    font-size: 19px;
+
+    margin-bottom: 5px;
+}
+
+.product-category {
+
+    color: #7fa697;
+
+    font-size: 13px;
+}
+
+.product-price {
+
+    margin-top: 10px;
+
+    color: #4fffb0;
+
+    font-size: 20px;
+
+    font-weight: 800;
+}
+
+.add {
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: rgba(0, 208, 132, .12);
+
+    color: #4fffb0;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+.add:hover {
+
+    background: #00c878;
+
+    color: #062017;
+}
+
+/* =========================================================
+   CART
+========================================================= */
+
+.cart-section {
+
+    margin-top: 70px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+}
+
+.panel {
+
+    background: rgba(255, 255, 255, .045);
+
+    border: 1px solid rgba(255, 255, 255, .08);
+
+    border-radius: 25px;
+
+    padding: 25px;
+}
+
+.panel h2 {
+
+    margin-bottom: 20px;
+}
+
+.cart-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 14px;
+
+    background: rgba(255, 255, 255, .04);
+
+    border-radius: 12px;
+
+    margin-bottom: 10px;
+}
+
+.remove {
+
+    border: none;
+
+    background: #ff4d67;
+
+    color: white;
+
+    width: 32px;
+
+    height: 32px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   OPTIMIZER
+========================================================= */
+
+.optimizer {
+
+    margin-top: 25px;
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(0, 208, 132, .08),
+            rgba(124, 58, 237, .08));
+}
+
+.optimized-item {
+
+    padding: 17px;
+
+    margin: 12px 0;
+
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, .06);
+
+    border-left: 4px solid #00d084;
+}
+
+.store {
+
+    color: #a9c9bb;
+
+    margin-top: 5px;
+}
+
+.optimized-price {
+
+    color: #4fffb0;
+
+    font-weight: 900;
+
+    font-size: 20px;
+}
+
+.available {
+
+    color: #4fffb0;
+}
+
+.unavailable {
+
+    color: #ff7b8e;
+}
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+.total-card {
+
+    margin-top: 25px;
+
+    padding: 30px;
+
+    border-radius: 25px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(135deg,
+            #00a86b,
+            #087f5b);
+
+    box-shadow:
+        0 20px 50px rgba(0, 208, 132, .15);
+}
+
+.total-card h1 {
+
+    font-size: 48px;
+
+    margin: 10px 0;
+}
+
+.order-button {
+
+    padding: 17px 35px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #fff;
+
+    color: #087f5b;
+
+    font-size: 18px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+}
+
+.order-button:hover {
+
+    transform: translateY(-3px);
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.accessibility {
+
+    margin-top: 50px;
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.accessibility button {
+
+    padding: 12px 17px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(255, 255, 255, .1);
+
+    background: rgba(255, 255, 255, .05);
+
+    color: white;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+
+    margin-top: 80px;
+
+    padding: 50px 20px;
+
+    text-align: center;
+
+    background: #04130e;
+
+    border-top: 1px solid rgba(255, 255, 255, .07);
+}
+
+footer h2 {
+
+    margin-bottom: 10px;
+}
+
+footer p {
+
+    color: #779889;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+
+    position: fixed;
+
+    right: 25px;
+
+    bottom: 25px;
+
+    background: #00c878;
+
+    color: #052015;
+
+    padding: 15px 20px;
+
+    border-radius: 12px;
+
+    font-weight: 800;
+
+    transform: translateY(120px);
+
+    transition: .4s;
+
+    z-index: 5000;
+}
+
+.toast.show {
+
+    transform: translateY(0);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:900px) {
+
+    .hero-visual {
+        display: none;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cart-section {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero {
+        padding: 60px 25px;
+    }
+
+    .hero h1 {
+        letter-spacing: -2px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .search-wrapper {
+        flex-direction: column;
+    }
+
+}
+
+</style></head><body>< !--=========================================================NAVBAR=========================================================--><nav class="navbar"><div class="logo"><div class="logo-icon">🛒 </div>AccessCart </div><div class="nav-links"><a href="#shop">Shop</a><a href="#cart">My Cart</a><a href="#accessibility">Accessibility</a></div><button class="nav-cart"
+onclick="scrollToCart()">🛒 Cart <span id="cartCount">0</span></button></nav>< !--=========================================================HERO=========================================================--><section class="hero"><div class="hero-content"><span class="badge">♿ AI-Powered Accessible Shopping </span><h1>Grocery shopping,
+
+<span class="gradient-text">without barriers. </span></h1><p>AccessCart is a voice-first grocery assistant designed to help people with disabilities shop independently while finding the best combination of price and availability. </p><div class="hero-buttons"><button class="primary-btn"
+onclick="startVoice()">🎤 Start Voice Shopping </button><button class="secondary-btn"
+onclick="scrollToShop()">🛍️ Explore Groceries </button></div></div><div class="hero-visual"><div class="glow-circle"></div><div class="food food1">🍎</div><div class="food food2">🥛</div><div class="food food3">🥦</div><div class="food food4">🍞</div></div></section>< !--=========================================================STATS=========================================================--><section class="stats"><div class="stat"><h2>100+</h2><p>Grocery Products</p></div><div class="stat"><h2>3+</h2><p>Store Sources</p></div><div class="stat"><h2>AI</h2><p>Smart Optimization</p></div><div class="stat"><h2>24/7</h2><p>Accessible Shopping</p></div></section>< !--=========================================================MAIN=========================================================--><main class="container">< !-- VOICE --><section class="voice-card"><h2>🎙️ Your Voice Shopping Assistant </h2><p>Say something like: <strong>"Add rice, milk, eggs and apples"
+</strong></p><button id="micButton"
+class="mic"
+onclick="startVoice()">🎤 </button><div id="voiceStatus"
+class="voice-status">Ready to listen </div><p style="margin-top:15px">You can also say: <br>"Show my cart"
+
+• "Add rice"
+
+• "Remove milk"
+
+</p></section>< !-- SHOP --><section id="shop"><div class="section-title"><h2>🛍️ Explore Groceries </h2><p>Choose from our grocery catalog. </p></div>< !-- SEARCH --><div class="search-wrapper"><input id="search"
+type="text"
+placeholder="Search rice, milk, fruits, vegetables..."
+oninput="searchProducts()"
+><button onclick="searchProducts()">🔎 Search </button></div>< !-- CATEGORIES --><div class="categories"><button class="category active"
+onclick="filterCategory('All',this)">All </button><button class="category"
+onclick="filterCategory('Fruits',this)">🍎 Fruits </button><button class="category"
+onclick="filterCategory('Vegetables',this)">🥦 Vegetables </button><button class="category"
+onclick="filterCategory('Dairy',this)">🥛 Dairy </button><button class="category"
+onclick="filterCategory('Staples',this)">🌾 Staples </button><button class="category"
+onclick="filterCategory('Bakery',this)">🍞 Bakery </button><button class="category"
+onclick="filterCategory('Beverages',this)">☕ Beverages </button><button class="category"
+onclick="filterCategory('Snacks',this)">🍪 Snacks </button><button class="category"
+onclick="filterCategory('Personal Care',this)">🧼 Personal Care </button></div>< !-- PRODUCTS --><div id="products"
+class="products"></div></section>< !--=====================================================CART======================================================--><section id="cart"
+class="cart-section"><div class="panel"><h2>🛒 Your Cart </h2><div id="cartItems"><p style="color:#88a99a">Your cart is empty. </p></div></div>< !-- OPTIMIZER --><div class="panel"><h2>🤖 Smart Optimizer </h2><p style="color:#8eae9f">We automatically compare price and availability and select the best available option. </p><div id="optimization"
+class="optimizer">Add products to see your optimized shopping plan. </div></div></section>< !-- TOTAL --><div class="total-card"><p>Your optimized estimated total </p><h1 id="total">₹0 </h1><p>💚 Price+Availability Optimized </p><button class="order-button"
+onclick="createOrder()">🛒 Create My Order </button></div>< !-- ACCESSIBILITY --><section id="accessibility"
+class="accessibility"><button onclick="increaseText()">🔎 Increase Text </button><button onclick="decreaseText()">🔍 Decrease Text </button><button onclick="readPage()">🔊 Read Page </button><button onclick="stopSpeaking()">⏹ Stop Voice </button></section></main>< !--=========================================================FOOTER=========================================================--><footer><h2>🛒 AccessCart </h2><p>Making grocery shopping more accessible,
+independent and affordable. </p><p style="margin-top:15px">Built for Hackathon 2026 🚀 </p></footer><div id="toast"
+class="toast"></div><script>
+/* =========================================================
+   PRODUCT DATABASE
+========================================================= */
+
+const products=[ {
+
+    name:"Rice",
+    category:"Staples",
+    emoji:"🍚",
+    stores:[ {
+        name: "Store A", price:55, available:true
+    }
+
+    ,
+    {
+    name: "Store B", price:52, available:true
+}
+
+,
+{
+name: "Store C", price:60, available:false
+}
+
+]
+}
+
+,
+
+{
+
+name:"Wheat",
+category:"Staples",
+emoji:"🌾",
+stores:[ {
+    name: "Store A", price:48, available:true
+}
+
+,
+{
+name: "Store B", price:45, available:true
+}
+
+,
+{
+name: "Store C", price:50, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Milk",
+category:"Dairy",
+emoji:"🥛",
+stores:[ {
+    name: "Store A", price:58, available:true
+}
+
+,
+{
+name: "Store B", price:62, available:true
+}
+
+,
+{
+name: "Store C", price:55, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Bread",
+category:"Bakery",
+emoji:"🍞",
+stores:[ {
+    name: "Store A", price:40, available:false
+}
+
+,
+{
+name: "Store B", price:35, available:true
+}
+
+,
+{
+name: "Store C", price:38, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Eggs",
+category:"Dairy",
+emoji:"🥚",
+stores:[ {
+    name: "Store A", price:72, available:true
+}
+
+,
+{
+name: "Store B", price:68, available:true
+}
+
+,
+{
+name: "Store C", price:75, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Apples",
+category:"Fruits",
+emoji:"🍎",
+stores:[ {
+    name: "Store A", price:120, available:true
+}
+
+,
+{
+name: "Store B", price:110, available:false
+}
+
+,
+{
+name: "Store C", price:115, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Banana",
+category:"Fruits",
+emoji:"🍌",
+stores:[ {
+    name: "Store A", price:50, available:true
+}
+
+,
+{
+name: "Store B", price:45, available:true
+}
+
+,
+{
+name: "Store C", price:55, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Orange",
+category:"Fruits",
+emoji:"🍊",
+stores:[ {
+    name: "Store A", price:90, available:true
+}
+
+,
+{
+name: "Store B", price:85, available:true
+}
+
+,
+{
+name: "Store C", price:95, available:false
+}
+
+]
+}
+
+,
+
+{
+
+name:"Tomato",
+category:"Vegetables",
+emoji:"🍅",
+stores:[ {
+    name: "Store A", price:40, available:true
+}
+
+,
+{
+name: "Store B", price:35, available:true
+}
+
+,
+{
+name: "Store C", price:45, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Potato",
+category:"Vegetables",
+emoji:"🥔",
+stores:[ {
+    name: "Store A", price:35, available:true
+}
+
+,
+{
+name: "Store B", price:32, available:true
+}
+
+,
+{
+name: "Store C", price:40, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Onion",
+category:"Vegetables",
+emoji:"🧅",
+stores:[ {
+    name: "Store A", price:42, available:true
+}
+
+,
+{
+name: "Store B", price:38, available:true
+}
+
+,
+{
+name: "Store C", price:45, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Carrot",
+category:"Vegetables",
+emoji:"🥕",
+stores:[ {
+    name: "Store A", price:55, available:true
+}
+
+,
+{
+name: "Store B", price:48, available:true
+}
+
+,
+{
+name: "Store C", price:52, available:false
+}
+
+]
+}
+
+,
+
+{
+
+name:"Broccoli",
+category:"Vegetables",
+emoji:"🥦",
+stores:[ {
+    name: "Store A", price:70, available:true
+}
+
+,
+{
+name: "Store B", price:65, available:true
+}
+
+,
+{
+name: "Store C", price:75, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Cucumber",
+category:"Vegetables",
+emoji:"🥒",
+stores:[ {
+    name: "Store A", price:35, available:true
+}
+
+,
+{
+name: "Store B", price:30, available:true
+}
+
+,
+{
+name: "Store C", price:38, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Sugar",
+category:"Staples",
+emoji:"🍬",
+stores:[ {
+    name: "Store A", price:48, available:true
+}
+
+,
+{
+name: "Store B", price:45, available:true
+}
+
+,
+{
+name: "Store C", price:50, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Salt",
+category:"Staples",
+emoji:"🧂",
+stores:[ {
+    name: "Store A", price:25, available:true
+}
+
+,
+{
+name: "Store B", price:22, available:true
+}
+
+,
+{
+name: "Store C", price:28, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Cooking Oil",
+category:"Staples",
+emoji:"🫗",
+stores:[ {
+    name: "Store A", price:130, available:true
+}
+
+,
+{
+name: "Store B", price:125, available:true
+}
+
+,
+{
+name: "Store C", price:135, available:false
+}
+
+]
+}
+
+,
+
+{
+
+name:"Tea",
+category:"Beverages",
+emoji:"🍵",
+stores:[ {
+    name: "Store A", price:110, available:true
+}
+
+,
+{
+name: "Store B", price:105, available:true
+}
+
+,
+{
+name: "Store C", price:120, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Coffee",
+category:"Beverages",
+emoji:"☕",
+stores:[ {
+    name: "Store A", price:180, available:true
+}
+
+,
+{
+name: "Store B", price:165, available:true
+}
+
+,
+{
+name: "Store C", price:175, available:false
+}
+
+]
+}
+
+,
+
+{
+
+name:"Biscuits",
+category:"Snacks",
+emoji:"🍪",
+stores:[ {
+    name: "Store A", price:35, available:true
+}
+
+,
+{
+name: "Store B", price:30, available:true
+}
+
+,
+{
+name: "Store C", price:32, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Chips",
+category:"Snacks",
+emoji:"🥔",
+stores:[ {
+    name: "Store A", price:30, available:true
+}
+
+,
+{
+name: "Store B", price:28, available:true
+}
+
+,
+{
+name: "Store C", price:35, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Soap",
+category:"Personal Care",
+emoji:"🧼",
+stores:[ {
+    name: "Store A", price:40, available:true
+}
+
+,
+{
+name: "Store B", price:38, available:true
+}
+
+,
+{
+name: "Store C", price:45, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Shampoo",
+category:"Personal Care",
+emoji:"🧴",
+stores:[ {
+    name: "Store A", price:180, available:true
+}
+
+,
+{
+name: "Store B", price:165, available:true
+}
+
+,
+{
+name: "Store C", price:175, available:false
+}
+
+]
+}
+
+,
+
+{
+
+name:"Toothpaste",
+category:"Personal Care",
+emoji:"🪥",
+stores:[ {
+    name: "Store A", price:95, available:true
+}
+
+,
+{
+name: "Store B", price:90, available:true
+}
+
+,
+{
+name: "Store C", price:100, available:true
+}
+
+]
+}
+
+,
+
+{
+
+name:"Chicken",
+category:"Meat",
+emoji:"🍗",
+stores:[ {
+    name: "Store A", price:220, available:true
+}
+
+,
+{
+name: "Store B", price:210, available:false
+}
+
+,
+{
+name: "Store C", price:230, available:true
+}
+
+]
+}
+
+];
+
+
+/* =========================================================
+   CART
+========================================================= */
+
+let cart=[];
+
+let selectedCategory="All";
+
+
+/* =========================================================
+   DISPLAY PRODUCTS
+========================================================= */
+
+function displayProducts(list) {
+
+    const container=document.getElementById("products");
+
+    container.innerHTML="";
+
+
+    if (list.length===0) {
+
+        container.innerHTML=` <p style="color:#9fc0b1">No products found. </p>`;
+
+        return;
+    }
+
+
+    list.forEach(product=> {
+
+            const card=document.createElement("div");
+
+            card.className="product";
+
+
+            const cheapest=findBestStore(product);
+
+
+            card.innerHTML=` <div class="product-image" > $ {
+                product.emoji
+            }
+
+            </div> <h3> $ {
+                product.name
+            }
+
+            </h3> <p class="product-category" > $ {
+                product.category
+            }
+
+            </p> <div class="product-price" > From ₹$ {
+                cheapest ? cheapest.price : "--"
+            }
+
+            </div> <button class="add"
+            onclick="addToCart('${product.name}')" > + Add to Cart </button> `;
+
+
+            container.appendChild(card);
+
+        });
+
+}
+
+
+/* =========================================================
+   FIND CHEAPEST AVAILABLE
+========================================================= */
+
+function findBestStore(product) {
+
+    const available=product.stores.filter(store=> store.available);
+
+
+    if (available.length===0) {
+
+        return null;
+
+    }
+
+
+    return available.sort((a, b)=> a.price - b.price)[0];
+
+}
+
+
+/* =========================================================
+   ADD TO CART
+========================================================= */
+
+function addToCart(name) {
+
+    if ( !cart.includes(name)) {
+
+        cart.push(name);
+
+        showToast(`$ {
+                name
+            }
+
+            added to cart`);
+
+        speak(`$ {
+                name
+            }
+
+            added to your cart`);
+
+    }
+
+
+    updateCart();
+
+    optimizeCart();
+
+}
+
+
+/* =========================================================
+   REMOVE
+========================================================= */
+
+function removeFromCart(name) {
+
+    cart=cart.filter(item=> item !==name);
+
+    updateCart();
+
+    optimizeCart();
+
+    showToast(`$ {
+            name
+        }
+
+        removed`);
+
+}
+
+
+/* =========================================================
+   UPDATE CART
+========================================================= */
+
+function updateCart() {
+
+    const container=document.getElementById("cartItems");
+
+
+    document.getElementById("cartCount") .innerText=cart.length;
+
+
+    if (cart.length===0) {
+
+        container.innerHTML=` <p style="color:#88a99a">Your cart is empty. </p>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML="";
+
+
+    cart.forEach(name=> {
+
+            const product=products.find(p=> p.name===name);
+
+
+            const item=document.createElement("div");
+
+
+            item.className="cart-item";
+
+
+            item.innerHTML=` <span> $ {
+                product.emoji
+            }
+
+            <strong> $ {
+                product.name
+            }
+
+            </strong> </span> <button class="remove"
+            onclick="removeFromCart('${product.name}')" > × </button> `;
+
+
+            container.appendChild(item);
+
+        });
+
+}
+
+
+/* =========================================================
+   SMART OPTIMIZER
+========================================================= */
+
+function optimizeCart() {
+
+    const container=document.getElementById("optimization");
+
+
+    if (cart.length===0) {
+
+        container.innerHTML="Add products to see your optimized shopping plan.";
+
+        document.getElementById("total") .innerText="₹0";
+
+        return;
+
+    }
+
+
+    container.innerHTML="";
+
+    let total=0;
+
+
+    cart.forEach(name=> {
+
+            const product=products.find(p=> p.name===name);
+
+
+            const best=findBestStore(product);
+
+
+            const div=document.createElement("div");
+
+
+            div.className="optimized-item";
+
+
+            if (best) {
+
+                total +=best.price;
+
+
+                div.innerHTML=` <strong> $ {
+                    product.emoji
+                }
+
+                $ {
+                    product.name
+                }
+
+                </strong> <div class="store" > 🏪 $ {
+                    best.name
+                }
+
+                </div> <div class="optimized-price" > ₹$ {
+                    best.price
+                }
+
+                </div> <div class="available" > ● Available </div> `;
+
+            }
+
+            else {
+
+                div.innerHTML=` <strong> $ {
+                    product.name
+                }
+
+                </strong> <div class="unavailable" > ● Currently unavailable </div> `;
+
+            }
+
+
+            container.appendChild(div);
+
+        });
+
+
+    document.getElementById("total") .innerText="₹"+total;
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function searchProducts() {
+
+    const search=document.getElementById("search") .value .toLowerCase();
+
+
+    let filtered=products.filter(product=> {
+
+            const matchesSearch=product.name .toLowerCase() .includes(search);
+
+
+            const matchesCategory=selectedCategory==="All" || product.category===selectedCategory;
+
+
+            return matchesSearch && matchesCategory;
+
+        });
+
+
+    displayProducts(filtered);
+
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+function filterCategory(category, button) {
+
+    selectedCategory=category;
+
+
+    document.querySelectorAll(".category") .forEach(btn=> btn.classList.remove("active"));
+
+
+    button.classList.add("active");
+
+
+    searchProducts();
+
+}
+
+
+/* =========================================================
+   VOICE ASSISTANT
+========================================================= */
+
+function startVoice() {
+
+    const Recognition=window.SpeechRecognition || window.webkitSpeechRecognition;
+
+
+    if ( !Recognition) {
+
+        alert("Voice recognition is not supported in this browser. Please use Google Chrome."
+        );
+
+        return;
+
+    }
+
+
+    const recognition=new Recognition();
+
+
+    recognition.lang="en-IN";
+
+    recognition.continuous=false;
+
+    recognition.interimResults=false;
+
+
+    const mic=document.getElementById("micButton");
+
+
+    mic.classList.add("listening");
+
+
+    document.getElementById("voiceStatus") .innerText="🎤 Listening...";
+
+
+    recognition.start();
+
+
+    recognition.onresult=function(event) {
+
+        const command=event.results[0][0] .transcript .toLowerCase();
+
+
+        document.getElementById("voiceStatus") .innerText="You said: "+command;
+
+
+        processVoiceCommand(command);
+
+    }
+
+    ;
+
+
+    recognition.onerror=function() {
+
+        document.getElementById("voiceStatus") .innerText="Try again — I couldn't understand.";
+
+    }
+
+    ;
+
+
+    recognition.onend=function() {
+
+        mic.classList.remove("listening"
+        );
+
+    }
+
+    ;
+
+}
+
+
+/* =========================================================
+   VOICE COMMAND PROCESSOR
+========================================================= */
+
+function processVoiceCommand(command) {
+
+
+    /* SHOW CART */
+
+    if (command.includes("show cart") || command.includes("open cart") || command.includes("my cart")) {
+
+        scrollToCart();
+
+        speak("Here is your grocery cart."
+        );
+
+        return;
+
+    }
+
+
+    /* REMOVE */
+
+    if (command.includes("remove")) {
+
+        products.forEach(product=> {
+
+                if (command.includes(product.name.toLowerCase())) {
+
+                    removeFromCart(product.name);
+
+                }
+
+            });
+
+        return;
+
+    }
+
+
+    /* ADD PRODUCTS */
+
+    let added=[];
+
+
+    products.forEach(product=> {
+
+            if (command.includes(product.name.toLowerCase())) {
+
+                if ( !cart.includes(product.name)) {
+
+                    cart.push(product.name);
+
+                    added.push(product.name);
+
+                }
+
+            }
+
+        });
+
+
+    updateCart();
+
+    optimizeCart();
+
+
+    if (added.length > 0) {
+
+        speak("Added " + added.join(", ") + " to your cart."
+        );
+
+
+        showToast("Added: " + added.join(", "));
+
+    }
+
+    else {
+
+        speak("I could not find that grocery item."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   TEXT TO SPEECH
+========================================================= */
+
+function speak(text) {
+
+    if ( !("speechSynthesis" in window)) {
+
+        return;
+
+    }
+
+
+    window.speechSynthesis.cancel();
+
+
+    const speech=new SpeechSynthesisUtterance(text);
+
+
+    speech.lang="en-IN";
+
+    speech.rate=0.9;
+
+    speech.pitch=1;
+
+
+    window.speechSynthesis.speak(speech);
+
+}
+
+
+function stopSpeaking() {
+
+    window.speechSynthesis.cancel();
+
+}
+
+
+/* =========================================================
+   READ PAGE
+========================================================= */
+
+function readPage() {
+
+    speak("Welcome to AccessCart. " + "You can use your voice to add groceries. " + "There are " + products.length + " grocery products in this demo. " + "AccessCart compares store prices " + "and availability and creates an optimized cart."
+
+    );
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+function increaseText() {
+
+    document.body.style.fontSize="18px";
+
+    showToast("Text size increased"
+    );
+
+}
+
+
+function decreaseText() {
+
+    document.body.style.fontSize="16px";
+
+    showToast("Text size decreased"
+    );
+
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollToShop() {
+
+    document .getElementById("shop") .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+function scrollToCart() {
+
+    document .getElementById("cart") .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   ORDER
+========================================================= */
+
+function createOrder() {
+
+    if (cart.length===0) {
+
+        showToast("Please add groceries first."
+        );
+
+        speak("Please add groceries before creating your order."
+        );
+
+        return;
+
+    }
+
+
+    const total=document.getElementById("total") .innerText;
+
+
+    speak("Your optimized grocery order has been created."
+    );
+
+
+    alert("🎉 ORDER CREATED!\n\n" + "Items:\n" + cart.join(", ") + "\n\n" + "Optimized Total: " + total + "\n\n" + "The cheapest available option was selected for each item."
+
+    );
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message) {
+
+    const toast=document.getElementById("toast");
+
+
+    toast.innerText=message;
+
+
+    toast.classList.add("show");
+
+
+    setTimeout(()=> {
+
+            toast.classList.remove("show");
+
+        }
+
+        , 2500);
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+displayProducts(products);
+
+updateCart();
+
+optimizeCart();
+
+
+</script></body></html>
